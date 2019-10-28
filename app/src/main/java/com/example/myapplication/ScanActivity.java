@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -27,14 +27,37 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
     }
 
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_CANCELED){
+
+        }
+        if (requestCode == RESULT_OK){
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent myIntent = new Intent(this, MainActivity.class);
+        startActivityForResult(myIntent, RESULT_CANCELED);
+        finish();
+    }
+
+    /**
+     * @param barcode
+     */
     @Override
     public void onScanned(Barcode barcode) {
 // playing barcode reader beep sound
         barcodeReader.playBeep();
         // ticket details activity by passing barcode
-        Intent intent = new Intent(ScanActivity.this, TicketActivity.class);
+        Intent intent = new Intent(ScanActivity.this, TicketResultActivity.class);
         intent.putExtra("code", barcode.displayValue);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -49,7 +72,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
     @Override
     public void onScanError(String errorMessage) {
-        Toast.makeText(getApplicationContext(), "Error occurred while scanning " + errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Erro ocorreu quando scaneava !" + errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override

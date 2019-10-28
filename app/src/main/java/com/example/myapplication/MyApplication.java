@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -9,7 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class MyApplication extends AppCompatActivity {
+public class MyApplication extends Application {
 
     public static final String TAG = MyApplication.class.getSimpleName();
 
@@ -18,18 +19,16 @@ public class MyApplication extends AppCompatActivity {
     private static MyApplication mInstance;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
     }
 
-    public static MyApplication getmInstance() {
+    public static synchronized MyApplication getInstance() {
         return mInstance;
     }
 
     public RequestQueue getmRequestQueue() {
-
         if (mRequestQueue == null){
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }

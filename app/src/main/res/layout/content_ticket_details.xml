@@ -20,7 +20,7 @@
         android:textSize="16dp"
         android:visibility="gone" />
 
-    <info.androidhive.movietickets.TicketView
+    <com.example.myapplication.TicketView
         android:id="@+id/layout_ticket"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -180,7 +180,7 @@
 
         </LinearLayout>
 
-    </info.androidhive.movietickets.TicketView>
+    </com.example.myapplication.TicketView>
 
     <Button
         android:id="@+id/btn_buy"

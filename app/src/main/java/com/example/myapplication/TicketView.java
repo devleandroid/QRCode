@@ -27,11 +27,20 @@ public class TicketView extends LinearLayout {
         Init();
     }
 
+    /**
+     * @param context
+     * @param attrs
+     */
     public TicketView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         Init();
     }
 
+    /**
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
     public TicketView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Init();
@@ -43,6 +52,12 @@ public class TicketView extends LinearLayout {
         eraser.setAntiAlias(true);
     }
 
+    /**
+     * @param w
+     * @param h
+     * @param oldw
+     * @param oldh
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         if (w != oldw || h != oldh){
@@ -52,6 +67,9 @@ public class TicketView extends LinearLayout {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
+    /**
+     * @param canvas
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         int w = getWidth();
@@ -96,6 +114,11 @@ public class TicketView extends LinearLayout {
         super.onDraw(canvas);
     }
 
+    /**
+     * @param context
+     * @param dp
+     * @return
+     */
     public static float pxFromDp(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }

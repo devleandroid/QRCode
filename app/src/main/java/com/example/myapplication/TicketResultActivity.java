@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -20,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.vision.clearcut.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -38,7 +38,7 @@ public class TicketResultActivity extends AppCompatActivity {
     private TicketView ticketView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_result);
 
@@ -71,26 +71,37 @@ public class TicketResultActivity extends AppCompatActivity {
         searchBarcode(barcode);
     }
 
+    /**
+     * @param barcode
+     */
     private void searchBarcode(String barcode) {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, URL + barcode, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e(TAG, "Ticket response: " + response.toString());
-                if (!response.has("error")) {
-                    renderMove(response);
-                } else {
-                    showNoTicket();
-                }
-            }
+        // making volley's json request
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                URL + barcode, null,
+                new Response.Listener<JSONObject>() {
 
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e(TAG, "Ticket response: " + response.toString());
+                        // check for success status
+                        if (!response.has("error")) {
+                            // received movie response
+                            renderMovie(response);
+                        } else {
+                            // no movie found
+                            showNoTicket();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 showNoTicket();
             }
         });
-        MyApplication.getmInstance().addToRequestQueue(jsonObjReq);
+
+        MyApplication.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     private void showNoTicket() {
@@ -99,7 +110,10 @@ public class TicketResultActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void renderMove(JSONObject response) {
+    /**
+     * @param response
+     */
+    private void renderMovie(JSONObject response) {
 
         try {
             // converting json to movie object
@@ -117,6 +131,13 @@ public class TicketResultActivity extends AppCompatActivity {
                 if (movie.isReleased()) {
                     btnBuy.setText(getString(R.string.btn_buy_now));
                     btnBuy.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    // validate ticket
+                    btnBuy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
                 } else {
                     btnBuy.setText(getString(R.string.btn_coming_soon));
                     btnBuy.setTextColor(ContextCompat.getColor(this, R.color.btn_disabled));
@@ -138,5 +159,18 @@ public class TicketResultActivity extends AppCompatActivity {
         }
     }
 
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(this, MainActivity.class);
+        startActivityForResult(myIntent, RESULT_CANCELED);
+        finish();
+        return true;
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent myIntent = new Intent(this, ScanActivity.class);
+        startActivityForResult(myIntent, RESULT_CANCELED);
+        finish();
+    }
 }

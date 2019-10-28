@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -41,8 +42,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ScanActivity.class));
+                finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK){
+
+        }
+        if (requestCode == RESULT_CANCELED){
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void transparentToolbar() {
@@ -58,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param mActivity
+     * @param bits
+     * @param bOn
+     */
     private void setWindowFlag(Activity mActivity, final int bits, boolean bOn) {
         Window window = mActivity.getWindow();
         WindowManager.LayoutParams winParam = window.getAttributes();
