@@ -30,10 +30,10 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_CANCELED){
+        if (resultCode == RESULT_CANCELED){
 
         }
-        if (requestCode == RESULT_OK){
+        if (resultCode == RESULT_OK){
 
         }
     }

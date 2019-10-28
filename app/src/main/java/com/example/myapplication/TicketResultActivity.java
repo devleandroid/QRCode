@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
@@ -21,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -30,6 +33,7 @@ public class TicketResultActivity extends AppCompatActivity {
     private static final String TAG = TicketResultActivity.class.getSimpleName();
     // url to search barcode
     private static final String URL = "https://api.androidhive.info/barcodes/search.php?code=";
+    CoordinatorLayout coordinatorLayout;
 
     private TextView txtName, txtDuration, txtDirector, txtGenre, txtRating, txtPrice, txtError;
     private ImageView imgPoster;
@@ -37,6 +41,7 @@ public class TicketResultActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TicketView ticketView;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,7 @@ public class TicketResultActivity extends AppCompatActivity {
         txtError = findViewById(R.id.txt_error);
         ticketView = findViewById(R.id.layout_ticket);
         progressBar = findViewById(R.id.progressBar);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         String barcode = getIntent().getStringExtra("code");
 
@@ -135,7 +141,16 @@ public class TicketResultActivity extends AppCompatActivity {
                     btnBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Validate Ticket", Snackbar.LENGTH_LONG)
+                                    .setAction("Ok", new View.OnClickListener(){
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent mIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivityForResult(mIntent, RESULT_OK);
+                                            finish();
+                                        }
+                                    });
+                            snackbar.show();
                         }
                     });
                 } else {
@@ -160,8 +175,8 @@ public class TicketResultActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(this, MainActivity.class);
-        startActivityForResult(myIntent, RESULT_CANCELED);
+        Intent mIntent = new Intent(this, MainActivity.class);
+        startActivityForResult(mIntent, RESULT_CANCELED);
         finish();
         return true;
     }
@@ -169,8 +184,8 @@ public class TicketResultActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent myIntent = new Intent(this, ScanActivity.class);
-        startActivityForResult(myIntent, RESULT_CANCELED);
+        Intent mIntent = new Intent(this, ScanActivity.class);
+        startActivityForResult(mIntent, RESULT_CANCELED);
         finish();
     }
 }

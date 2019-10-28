@@ -29,6 +29,8 @@ dependencies {
 
     // barcode reader library
     implementation 'info.androidhive:barcode-reader:1.1.5'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:22.2.0'
     // google vision library
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     // glide image library

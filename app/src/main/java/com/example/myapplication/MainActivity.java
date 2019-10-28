@@ -13,6 +13,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -50,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK){
-
+        if (resultCode == RESULT_OK){
+            Toast.makeText(this,"Ticket Validate Success.", Toast.LENGTH_LONG).show();
         }
-        if (requestCode == RESULT_CANCELED){
-
+        if (resultCode == RESULT_CANCELED){
+            Toast.makeText(this,"Erro Validate Ticket Success.", Toast.LENGTH_LONG).show();
         }
     }
 
