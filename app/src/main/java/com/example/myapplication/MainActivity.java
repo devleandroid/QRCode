@@ -2,12 +2,14 @@ package com.example.myapplication;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -32,12 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
     private static MainActivity mInstance;
 
+    private boolean doubleBackToExitPressedOnce = false;
+    private CoordinatorLayout coordinatorLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //  making toolbar transparent
         transparentToolbar();
         setContentView(R.layout.activity_main);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         findViewById(R.id.btn_scan).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +69,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (doubleBackToExitPressedOnce){
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Clieque novamente para sair.", Snackbar.LENGTH_LONG);
+        snackbar.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        },2000);
     }
 
     private void transparentToolbar() {

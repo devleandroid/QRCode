@@ -33,7 +33,7 @@ public class TicketResultActivity extends AppCompatActivity {
     private static final String TAG = TicketResultActivity.class.getSimpleName();
     // url to search barcode
     private static final String URL = "https://api.androidhive.info/barcodes/search.php?code=";
-    CoordinatorLayout coordinatorLayout;
+    private CoordinatorLayout coordinatorLayout;
 
     private TextView txtName, txtDuration, txtDirector, txtGenre, txtRating, txtPrice, txtError;
     private ImageView imgPoster;
